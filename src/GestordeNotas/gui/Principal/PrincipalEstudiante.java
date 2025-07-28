@@ -26,7 +26,9 @@ public class PrincipalEstudiante extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new PrincipalAcademico_Estudiante().setVisible(true);
+                int idEstudiante = 4; // ejemplo
+                new PrincipalAcademico_Estudiante(idEstudiante).setVisible(true);
+
             }
         });
 
@@ -35,7 +37,8 @@ public class PrincipalEstudiante extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new PrincipalDocumentacion_Estudiante().setVisible(true);
+                int idEstudiante = 4; // ejemplo
+                new PrincipalAcademico_Estudiante(idEstudiante).setVisible(true);
             }
         });
     }
