@@ -13,7 +13,10 @@ public class PrincipalDocente extends JFrame {
     private JButton DATOSPERSONALESButton;
     private JPanel PrincipalDocente;
 
-    public PrincipalDocente() {
+    private int idDocente;
+
+    public PrincipalDocente(int idDocente) {
+        this.idDocente = idDocente;
 
         setContentPane(PrincipalDocente);
         setTitle("Principal - Docente");
@@ -21,20 +24,24 @@ public class PrincipalDocente extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
         ACADEMICOButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new PrincipalAcademico_Docente().setVisible(true);
+                new PrincipalAcademico_Docente(idDocente).setVisible(true);
             }
         });
         DATOSPERSONALESButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new InicioDocente().setVisible(true);
+                new InicioDocente(idDocente).setVisible(true);
             }
         });
+    }
+
+    // Constructor sin parámetros para pruebas, asigna un idDocente por defecto
+    public PrincipalDocente() {
+        this(3);
     }
 }

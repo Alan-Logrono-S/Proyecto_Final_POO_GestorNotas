@@ -41,7 +41,9 @@ public class PrincipalCoordinador extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new CoordInicio().setVisible(true);
+                CoordInicio ventana = new CoordInicio(2);  // 2 es el ID del coordinador en este ejemplo
+                ventana.setVisible(true);
+
             }
         });
     }
