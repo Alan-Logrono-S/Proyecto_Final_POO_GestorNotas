@@ -1,5 +1,8 @@
 package GestordeNotas.gui.Principal;
 
+import GestordeNotas.gui.Docente.Academico_Docente.PrincipalAcademico_Docente;
+import GestordeNotas.gui.Docente.Datos_Docente.InicioDocente;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,13 +25,15 @@ public class PrincipalDocente extends JFrame {
         ACADEMICOButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                dispose();
+                new PrincipalAcademico_Docente().setVisible(true);
             }
         });
         DATOSPERSONALESButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                dispose();
+                new InicioDocente().setVisible(true);
             }
         });
     }

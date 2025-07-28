@@ -1,4 +1,7 @@
 package GestordeNotas.gui.Principal;
+import GestordeNotas.gui.Coordinador.Academico_Coord.Principal_Academico_Coord;
+import GestordeNotas.gui.Coordinador.Datos_Coord.CoordInicio;
+import GestordeNotas.gui.Coordinador.Documentos_Coord.CoordReportNotas;
 import GestordeNotas.gui.Login.Login;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -23,19 +26,22 @@ public class PrincipalCoordinador extends JFrame {
         GESTIONACADEMICAButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                dispose();
+                new Principal_Academico_Coord().setVisible(true);
             }
         });
         GESTIONDOCUMENTACIONButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                dispose();
+                new CoordReportNotas().setVisible(true);
             }
         });
         DATOSPERSONALESButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                dispose();
+                new CoordInicio().setVisible(true);
             }
         });
     }

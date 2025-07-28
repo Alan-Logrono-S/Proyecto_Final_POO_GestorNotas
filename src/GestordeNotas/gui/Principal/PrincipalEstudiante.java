@@ -1,7 +1,8 @@
 package GestordeNotas.gui.Principal;
 
-import GestordeNotas.gui.Estudiante.Periodo_Academico_Estudiante.VentanaPrincipal;
-import GestordeNotas.gui.Principal.PrincipalEstudiante;
+import GestordeNotas.gui.Estudiante.Documentacion_Estudiante.PrincipalDocumentacion_Estudiante;
+import GestordeNotas.gui.Estudiante.Periodo_Academico_Estudiante.PrincipalAcademico_Estudiante;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +26,7 @@ public class PrincipalEstudiante extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new VentanaPrincipal().setVisible(true);
+                new PrincipalAcademico_Estudiante().setVisible(true);
             }
         });
 
@@ -33,9 +34,8 @@ public class PrincipalEstudiante extends JFrame {
         DOCUMENTACIONButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Aquí puedes agregar la acción correspondiente para este botón
-                // Ejemplo:
-                // new DocumentacionVentana().setVisible(true);
+                dispose();
+                new PrincipalDocumentacion_Estudiante().setVisible(true);
             }
         });
     }
