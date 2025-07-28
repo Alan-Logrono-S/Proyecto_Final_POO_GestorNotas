@@ -5,8 +5,6 @@ import GestordeNotas.gui.Principal.PrincipalDocente;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class InicioDocente extends JFrame {
@@ -27,34 +25,19 @@ public class InicioDocente extends JFrame {
         setSize(600, 400);
         setLocationRelativeTo(null);
 
-        CARGARDATOSPERSONALESButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cargarDatosPersonales();
-            }
+        CARGARDATOSPERSONALESButton.addActionListener(e -> cargarDatosPersonales());
+
+        regresarButton.addActionListener(e -> {
+            dispose();
+            new PrincipalDocente(idDocente).setVisible(true);
         });
 
-        regresarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new PrincipalDocente().setVisible(true);
-            }
-        });
-
-        salirButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        salirButton.addActionListener(e -> dispose());
     }
 
     private void cargarDatosPersonales() {
-        try {
-            Connection con = CleverDB.getConexion();
-
-            String query = "SELECT nombre, apellido, correo, telefono FROM usuarios WHERE id_usuario = ?";
+        try (Connection con = CleverDB.getConexion()) {
+            String query = "SELECT nombre, correo, telefono, direccion FROM usuarios WHERE id_usuario = ?";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setInt(1, idDocente);
 
@@ -66,9 +49,9 @@ public class InicioDocente extends JFrame {
 
             if (rs.next()) {
                 model.addRow(new Object[]{"Nombre", rs.getString("nombre")});
-                model.addRow(new Object[]{"Apellido", rs.getString("apellido")});
                 model.addRow(new Object[]{"Correo", rs.getString("correo")});
                 model.addRow(new Object[]{"Teléfono", rs.getString("telefono")});
+                model.addRow(new Object[]{"Dirección", rs.getString("direccion")});
             } else {
                 JOptionPane.showMessageDialog(this, "No se encontraron datos para el docente con ID: " + idDocente);
             }
@@ -77,8 +60,6 @@ public class InicioDocente extends JFrame {
 
             rs.close();
             stmt.close();
-            con.close();
-
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al cargar datos personales: " + ex.getMessage());
         }
