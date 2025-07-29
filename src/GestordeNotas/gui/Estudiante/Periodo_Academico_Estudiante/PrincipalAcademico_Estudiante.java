@@ -135,10 +135,11 @@ public class PrincipalAcademico_Estudiante extends JFrame {
         }
 
         try (Connection con = CleverDB.getConexion()) {
-            String query = "SELECT c.calificacion, c.observaciones FROM calificaciones c " +
+            String query = "SELECT a.nombre AS asignatura, c.calificacion, c.observaciones " +
+                    "FROM calificaciones c " +
                     "JOIN matriculas m ON c.id_matricula = m.id_matricula " +
                     "JOIN asignaturas a ON m.id_asignatura = a.id_asignatura " +
-                    "WHERE m.id_estudiante = ? AND a.nombre = ?";
+                    "WHERE m.id_estudiante = ?";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setInt(1, idEstudiante);
             stmt.setString(2, asignatura);
@@ -163,10 +164,13 @@ public class PrincipalAcademico_Estudiante extends JFrame {
             JOptionPane.showMessageDialog(this, "Error al cargar calificaciones: " + ex.getMessage());
         }
     }
+
+
+
     private void enviarCalificacionesPorCorreo(){
         try (Connection con = CleverDB.getConexion()){
             String correo = "";
-            PreparedStatement ps = con.prepareStatement("SELECT correo FROM usuarios WHERE  id_usuario = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT correo FROM usuarios WHERE id_usuario = ?");
             ps.setInt(1, idEstudiante);
             ResultSet rsCorreo = ps.executeQuery();
             if (rsCorreo.next()){
@@ -204,19 +208,18 @@ public class PrincipalAcademico_Estudiante extends JFrame {
     private void enviarCorreo(String destinatario, String asunto, String cuerpo){
         final String remitente = "anabelayo2017@gmail.com";
         final String clave = "pyfz hxru towk wssk";
+
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.ssl.protocols", "TLSv1.2");
-
         Session session = Session.getInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(remitente, clave);
             }
         });
-
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(remitente));
@@ -230,6 +233,12 @@ public class PrincipalAcademico_Estudiante extends JFrame {
         }catch (MessagingException e){
             JOptionPane.showMessageDialog(null,"Error enviando correo: "+ e.getMessage());
         }
+
+
     }
+
+
+
+
 
 }
