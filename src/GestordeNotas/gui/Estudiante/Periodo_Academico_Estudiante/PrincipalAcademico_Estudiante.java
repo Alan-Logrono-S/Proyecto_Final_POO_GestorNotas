@@ -3,11 +3,17 @@ package GestordeNotas.gui.Estudiante.Periodo_Academico_Estudiante;
 import GestordeNotas.database.CleverDB;
 import GestordeNotas.gui.Principal.PrincipalEstudiante;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Properties;
 
 public class PrincipalAcademico_Estudiante extends JFrame {
     private JTabbedPane tabbedPane1;
@@ -24,6 +30,7 @@ public class PrincipalAcademico_Estudiante extends JFrame {
     private JPanel EstAsignaturasInscritas;
     private JTable tablaAsignaturasEstudiantes;
     private JButton cargarAsignaturasButton;
+    private JButton correoButton;
 
     private int idEstudiante;
 
@@ -52,6 +59,13 @@ public class PrincipalAcademico_Estudiante extends JFrame {
         });
 
         salirButton.addActionListener(e -> dispose());
+        correoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                enviarCalificacionesPorCorreo();
+
+            }
+        });
     }
 
     private void cargarDatosPersonales() {
@@ -149,4 +163,73 @@ public class PrincipalAcademico_Estudiante extends JFrame {
             JOptionPane.showMessageDialog(this, "Error al cargar calificaciones: " + ex.getMessage());
         }
     }
+    private void enviarCalificacionesPorCorreo(){
+        try (Connection con = CleverDB.getConexion()){
+            String correo = "";
+            PreparedStatement ps = con.prepareStatement("SELECT correo FROM usuarios WHERE  id_usuario = ?");
+            ps.setInt(1, idEstudiante);
+            ResultSet rsCorreo = ps.executeQuery();
+            if (rsCorreo.next()){
+                correo = rsCorreo.getString("correo");
+            }else {
+                JOptionPane.showMessageDialog(null,"no se encontro el correo del estudiante");
+                return;
+            }
+            StringBuilder cuerpo = new StringBuilder("Tus calificaciones \n\n");
+            String query = "SELECT a.nombre AS asignatura, c.calificacion, c.observaciones " +
+                    "FROM calificaciones c " +
+                    "JOIN matriculas m ON c.id_matricula = m.id_matricula " +
+                    "JOIN asignaturas a ON m.id_asignatura = a.id_asignatura " +
+                    "WHERE m.id_estudiante = ?";
+            PreparedStatement stmt= con.prepareStatement(query);
+            stmt.setInt(1,idEstudiante);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                cuerpo.append("Asignatura: ").append(rs.getString("asignatura")).append("\n");
+                cuerpo.append("Calificación: ").append(rs.getDouble("calificacion")).append("\n");
+                cuerpo.append("Observaciones: ").append(rs.getString("observaciones")).append("\n\n");
+            }
+            rs.close();
+            stmt.close();
+            rsCorreo.close();
+            ps.close();
+
+            enviarCorreo(correo, "Resumen de Calificaciones ",cuerpo.toString());
+
+        }catch (Exception ex){
+            JOptionPane.showMessageDialog(null,"Error al enviar correo: "+ ex.getMessage());
+        }
+    }
+    private void enviarCorreo(String destinatario, String asunto, String cuerpo){
+        final String remitente = "anabelayo2017@gmail.com";
+        final String clave = "pyfz hxru towk wssk";
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+        Session session = Session.getInstance(props, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(remitente, clave);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(remitente));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
+            message.setSubject(asunto);
+            message.setText(cuerpo);
+
+            Transport.send(message);
+            JOptionPane.showMessageDialog(null,"Las notas fueron enviados al correo correctamente :)");
+
+        }catch (MessagingException e){
+            JOptionPane.showMessageDialog(null,"Error enviando correo: "+ e.getMessage());
+        }
+    }
+
 }
