@@ -6,12 +6,12 @@ import java.sql.SQLException;
 
 public class CleverDB {
 
-    private static final String HOST = "bqajf1zbxvelgzzikbmb-mysql.services.clever-cloud.com";
+    private static final String HOST = "bff6ewsjuz7mbtynro1r-mysql.services.clever-cloud.com";
     private static final String PUERTO = "3306";
-    private static final String DATABASE = "bqajf1zbxvelgzzikbmb";
-    private static final String USUARIO = "uckxb462tr4fsxeg";
-    private static final String PASSWORD = "4iP5maW2S0NrDXd4WlHR";
-    private static final String URL = "jdbc:mysql://uckxb462tr4fsxeg:4iP5maW2S0NrDXd4WlHR@bqajf1zbxvelgzzikbmb-mysql.services.clever-cloud.com:3306/bqajf1zbxvelgzzikbmb";
+    private static final String DATABASE = "bff6ewsjuz7mbtynro1r";
+    private static final String USUARIO = "uaqr1wnk37o44s3o";
+    private static final String PASSWORD = "VULRz16CXAjY3Q9ZpmHA";
+    private static final String URL = "jdbc:mysql://uaqr1wnk37o44s3o:VULRz16CXAjY3Q9ZpmHA@bff6ewsjuz7mbtynro1r-mysql.services.clever-cloud.com:3306/bff6ewsjuz7mbtynro1r";
 
     // Constructor privado para que no se pueda instanciar
     private CleverDB() {}
