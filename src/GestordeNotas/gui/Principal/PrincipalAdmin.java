@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PrincipalAdmin extends JFrame {
-    private JTextField textField1;
     private JButton GESTIONACADEMICOButton;
     private JButton GESTIONDOCUMENTACIONButton;
     private JButton CERTIFICACIONESButton;

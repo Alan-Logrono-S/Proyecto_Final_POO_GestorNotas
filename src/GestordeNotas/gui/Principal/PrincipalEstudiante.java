@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 
 public class PrincipalEstudiante extends JFrame {
     private JPanel PrincipalEstudiante; // Asegúrate de que este panel esté inicializado correctamente
-    private JTextField textField1;
     private JButton PERIODOACADEMICOButton;
     private JButton DOCUMENTACIONButton;
 
@@ -38,7 +37,7 @@ public class PrincipalEstudiante extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 int idEstudiante = 4; // ejemplo
-                new PrincipalAcademico_Estudiante(idEstudiante).setVisible(true);
+                new PrincipalDocumentacion_Estudiante(idEstudiante).setVisible(true);
             }
         });
     }

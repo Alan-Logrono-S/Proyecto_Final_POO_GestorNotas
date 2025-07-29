@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PrincipalDocente extends JFrame {
-    private JTextField textField1;
     private JButton ACADEMICOButton;
     private JButton DATOSPERSONALESButton;
     private JPanel PrincipalDocente;

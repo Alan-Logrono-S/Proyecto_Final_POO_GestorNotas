@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 
 public class PrincipalCoordinador extends JFrame {
     private JPanel PrincipalCoordinador;
-    private JTextField textField1;
     private JButton GESTIONACADEMICAButton;
     private JButton GESTIONDOCUMENTACIONButton;
     private JButton DATOSPERSONALESButton;
