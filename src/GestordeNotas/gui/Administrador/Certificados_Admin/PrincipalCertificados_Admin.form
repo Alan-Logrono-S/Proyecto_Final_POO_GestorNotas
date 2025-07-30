@@ -33,14 +33,19 @@
                   <text value="CERTIFICADOS"/>
                 </properties>
               </component>
-              <component id="361db" class="javax.swing.JTable" binding="tablaAdminCertificados">
+              <scrollpane id="1001">
                 <constraints>
-                  <grid row="1" column="1" row-span="2" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="50"/>
-                  </grid>
+                  <grid row="1" column="1" row-span="2" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
-              </component>
+                <border type="none"/>
+                <children>
+                  <component id="361db" class="javax.swing.JTable" binding="tablaAdminCertificados">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
               <component id="c392b" class="javax.swing.JButton" binding="VISUALIZARButton" default-binding="true">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -75,14 +80,19 @@
                   <text value="REPORTES"/>
                 </properties>
               </component>
-              <component id="5559e" class="javax.swing.JTable" binding="tablaReportesAdmin">
+              <scrollpane id="d317d">
                 <constraints>
-                  <grid row="1" column="1" row-span="3" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="50"/>
-                  </grid>
+                  <grid row="1" column="1" row-span="3" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
-              </component>
+                <border type="none"/>
+                <children>
+                  <component id="5559e" class="javax.swing.JTable" binding="tablaReportesAdmin">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
               <component id="654a" class="javax.swing.JButton" binding="reportePorMateriaButton" default-binding="true">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -91,20 +101,20 @@
                   <text value="Reporte por Materia"/>
                 </properties>
               </component>
-              <component id="7d15e" class="javax.swing.JButton" binding="reportePorEstudianteButton" default-binding="true">
-                <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Reporte por Estudiante"/>
-                </properties>
-              </component>
               <component id="1324f" class="javax.swing.JButton" binding="reportePorPeriodoButton" default-binding="true">
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Reporte por Periodo"/>
+                </properties>
+              </component>
+              <component id="7d15e" class="javax.swing.JButton" binding="reportePorEstudianteButton" default-binding="true">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Reporte por Estudiante"/>
                 </properties>
               </component>
             </children>
