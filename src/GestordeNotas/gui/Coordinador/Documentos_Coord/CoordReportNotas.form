@@ -29,6 +29,7 @@
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-16748074"/>
           <text value="Reporte por Estudiante"/>
         </properties>
       </component>
@@ -37,6 +38,7 @@
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-16748074"/>
           <text value="Reporte por Materia"/>
         </properties>
       </component>
@@ -45,6 +47,7 @@
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-16748074"/>
           <text value="Reporte por Periodo"/>
         </properties>
       </component>
@@ -53,6 +56,7 @@
           <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-1280"/>
           <text value="Regresar"/>
         </properties>
       </component>
@@ -61,6 +65,7 @@
           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-65519"/>
           <text value="Salir"/>
         </properties>
       </component>

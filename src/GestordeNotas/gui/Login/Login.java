@@ -24,7 +24,7 @@ public class Login extends JFrame {
     public Login() {
         setContentPane(PanelLogin);
         setTitle("Sistema de Gestión de Notas");
-        setSize(400, 300);
+        setSize(500, 300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 

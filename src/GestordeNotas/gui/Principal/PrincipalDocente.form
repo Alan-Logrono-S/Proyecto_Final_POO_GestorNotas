@@ -5,7 +5,9 @@
     <constraints>
       <xy x="20" y="20" width="500" height="229"/>
     </constraints>
-    <properties/>
+    <properties>
+      <background color="-7031615"/>
+    </properties>
     <border type="none"/>
     <children>
       <component id="5f750" class="javax.swing.JButton" binding="ACADEMICOButton" default-binding="true">
@@ -13,6 +15,8 @@
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-16748074"/>
+          <foreground color="-1"/>
           <text value="ACADEMICO"/>
         </properties>
       </component>
@@ -30,6 +34,8 @@
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-16748074"/>
+          <foreground color="-1"/>
           <text value="DATOS PERSONALES"/>
         </properties>
       </component>
