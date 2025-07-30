@@ -109,8 +109,8 @@ public class Principal_Academico_Coord extends JFrame {
                 Connection conexion = CleverDB.getConexion();
 
                 // Paso 1: Obtener estudiantes inscritos en la asignatura
-                String queryEstudiantes = "SELECT u.id_usuario, u.nombre FROM usuarios u " +
-                        "JOIN matriculas m ON u.id_usuario = m.id_estudiante " +
+                String queryEstudiantes = "SELECT u.id, u.nombre FROM usuarios u " +
+                        "JOIN matriculas m ON u.id = m.id_estudiante " +
                         "JOIN asignaturas a ON m.id_asignatura = a.id_asignatura " +
                         "WHERE a.nombre = ? AND u.rol = 'estudiante'";
                 PreparedStatement stmtEst = conexion.prepareStatement(queryEstudiantes);
@@ -123,7 +123,7 @@ public class Principal_Academico_Coord extends JFrame {
 
                 while (rsEst.next()) {
                     String nombre = rsEst.getString("nombre");
-                    int id = rsEst.getInt("id_usuario");
+                    int id = rsEst.getInt("id");
                     modeloEst.addElement(nombre);
                     mapaEstudiantes.put(nombre, id);
                 }
@@ -222,9 +222,9 @@ public class Principal_Academico_Coord extends JFrame {
         if (asignaturaSeleccionada != null && !asignaturaSeleccionada.isEmpty()) {
             try {
                 // Consulta SQL modificada
-                String query = "SELECT u.id_usuario, u.nombre, a.nombre AS asignatura " +
+                String query = "SELECT u.id, u.nombre, a.nombre AS asignatura " +
                         "FROM usuarios u " +
-                        "JOIN matriculas m ON u.id_usuario = m.id_estudiante " +
+                        "JOIN matriculas m ON u.id = m.id_estudiante " +
                         "JOIN asignaturas a ON m.id_asignatura = a.id_asignatura " +
                         "WHERE a.nombre = ? AND u.rol = 'estudiante'";  // Filtrar solo los estudiantes
 
@@ -241,7 +241,7 @@ public class Principal_Academico_Coord extends JFrame {
 
                 while (rs.next()) {
                     model.addRow(new Object[]{
-                            rs.getInt("id_usuario"),
+                            rs.getInt("id"),
                             rs.getString("nombre"),
                             rs.getString("asignatura")
                     });
@@ -270,7 +270,7 @@ public class Principal_Academico_Coord extends JFrame {
                 String query = "SELECT c.id_calificacion, u.nombre AS estudiante, a.nombre AS asignatura, c.calificacion " +
                         "FROM calificaciones c " +
                         "JOIN matriculas m ON c.id_matricula = m.id_matricula " +
-                        "JOIN usuarios u ON m.id_estudiante = u.id_usuario " +
+                        "JOIN usuarios u ON m.id_estudiante = u.id" +
                         "JOIN asignaturas a ON m.id_asignatura = a.id_asignatura " +
                         "WHERE a.nombre = ?";
                 PreparedStatement stmt = conexion.prepareStatement(query);

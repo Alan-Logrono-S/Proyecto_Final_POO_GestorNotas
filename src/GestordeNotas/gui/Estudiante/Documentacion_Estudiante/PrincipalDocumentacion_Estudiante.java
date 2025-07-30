@@ -52,7 +52,7 @@ public class PrincipalDocumentacion_Estudiante extends JFrame {
     private void descargarCertificadoPDF() {
 
         try (Connection con = CleverDB.getConexion()) {
-            String estudianteQuery = "SELECT nombre FROM usuarios WHERE id_usuario = ?" ;
+            String estudianteQuery = "SELECT nombre FROM usuarios WHERE id= ?" ;
             PreparedStatement psEst = con.prepareStatement(estudianteQuery);
             psEst.setInt(1, idEstudiante);
             ResultSet rsEst = psEst.executeQuery();

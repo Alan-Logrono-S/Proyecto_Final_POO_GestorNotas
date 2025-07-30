@@ -70,7 +70,7 @@ public class PrincipalAcademico_Estudiante extends JFrame {
 
     private void cargarDatosPersonales() {
         try (Connection con = CleverDB.getConexion()) {
-            String query = "SELECT nombre, correo, telefono, direccion FROM usuarios WHERE id_usuario = ?";
+            String query = "SELECT nombre, correo, telefono, direccion FROM usuarios WHERE id = ?";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setInt(1, idEstudiante);
             ResultSet rs = stmt.executeQuery();
@@ -170,7 +170,7 @@ public class PrincipalAcademico_Estudiante extends JFrame {
     private void enviarCalificacionesPorCorreo(){
         try (Connection con = CleverDB.getConexion()){
             String correo = "";
-            PreparedStatement ps = con.prepareStatement("SELECT correo FROM usuarios WHERE id_usuario = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT correo FROM usuarios WHERE id = ?");
             ps.setInt(1, idEstudiante);
             ResultSet rsCorreo = ps.executeQuery();
             if (rsCorreo.next()){

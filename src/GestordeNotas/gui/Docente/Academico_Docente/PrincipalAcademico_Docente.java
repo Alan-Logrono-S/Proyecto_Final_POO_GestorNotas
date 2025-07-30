@@ -81,8 +81,8 @@ public class PrincipalAcademico_Docente extends JFrame {
         }
 
         try (Connection con = CleverDB.getConexion()) {
-            String query = "SELECT u.id_usuario, u.nombre FROM usuarios u " +
-                    "JOIN matriculas m ON u.id_usuario = m.id_estudiante " +
+            String query = "SELECT u.id, u.nombre FROM usuarios u " +
+                    "JOIN matriculas m ON u.id = m.id_estudiante " +
                     "JOIN asignaturas a ON m.id_asignatura = a.id_asignatura " +
                     "WHERE a.nombre = ? AND u.rol = 'estudiante'";
             PreparedStatement stmt = con.prepareStatement(query);
@@ -92,7 +92,7 @@ public class PrincipalAcademico_Docente extends JFrame {
             DefaultTableModel model = new DefaultTableModel(new Object[]{"ID", "Nombre"}, 0);
             while (rs.next()) {
                 model.addRow(new Object[]{
-                        rs.getInt("id_usuario"),
+                        rs.getInt("id"),
                         rs.getString("nombre")
                 });
             }
@@ -114,8 +114,8 @@ public class PrincipalAcademico_Docente extends JFrame {
         }
 
         try (Connection con = CleverDB.getConexion()) {
-            String query = "SELECT u.id_usuario, u.nombre, c.calificacion FROM usuarios u " +
-                    "JOIN matriculas m ON u.id_usuario = m.id_estudiante " +
+            String query = "SELECT u.id, u.nombre, c.calificacion FROM usuarios u " +
+                    "JOIN matriculas m ON u.id = m.id_estudiante " +
                     "JOIN asignaturas a ON m.id_asignatura = a.id_asignatura " +
                     "LEFT JOIN calificaciones c ON m.id_matricula = c.id_matricula " +
                     "WHERE a.nombre = ? AND u.rol = 'estudiante'";
@@ -126,7 +126,7 @@ public class PrincipalAcademico_Docente extends JFrame {
             DefaultTableModel model = new DefaultTableModel(new Object[]{"ID", "Nombre", "Calificación"}, 0);
             while (rs.next()) {
                 model.addRow(new Object[]{
-                        rs.getInt("id_usuario"),
+                        rs.getInt("id"),
                         rs.getString("nombre"),
                         rs.getObject("calificacion") != null ? rs.getDouble("calificacion") : ""
                 });

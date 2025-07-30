@@ -73,7 +73,7 @@ public class CoordReportNotas extends JFrame {
             Connection conexion = CleverDB.getConexion();
             String query = "SELECT r.id_reporte, u.nombre AS coordinador, r.tipo, r.fecha_generado, r.descripcion, r.ruta_archivo " +
                     "FROM reportes r " +
-                    "JOIN usuarios u ON r.generado_por = u.id_usuario " +
+                    "JOIN usuarios u ON r.generado_por = u.id " +
                     "WHERE r.tipo = ?";
             PreparedStatement stmt = conexion.prepareStatement(query);
             stmt.setString(1, tipo);

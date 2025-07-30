@@ -58,8 +58,8 @@ public class CoordInicio extends JFrame {
     private void cargarDatosCoordinador() {
         try {
             Connection conexion = CleverDB.getConexion();
-            String query = "SELECT id_usuario, nombre, correo, telefono, direccion FROM usuarios " +
-                    "WHERE id_usuario = ? AND rol = 'coordinador'";
+            String query = "SELECT id, nombre, correo, telefono, direccion FROM usuarios " +
+                    "WHERE id = ? AND rol = 'coordinador'";
             PreparedStatement stmt = conexion.prepareStatement(query);
             stmt.setInt(1, idUsuario);
             ResultSet rs = stmt.executeQuery();
@@ -74,7 +74,7 @@ public class CoordInicio extends JFrame {
 
             while (rs.next()) {
                 model.addRow(new Object[]{
-                        rs.getInt("id_usuario"),
+                        rs.getInt("id"),
                         rs.getString("nombre"),
                         rs.getString("correo"),
                         rs.getString("telefono"),

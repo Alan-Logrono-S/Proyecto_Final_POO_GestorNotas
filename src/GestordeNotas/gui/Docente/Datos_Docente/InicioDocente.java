@@ -37,7 +37,7 @@ public class InicioDocente extends JFrame {
 
     private void cargarDatosPersonales() {
         try (Connection con = CleverDB.getConexion()) {
-            String query = "SELECT nombre, correo, telefono, direccion FROM usuarios WHERE id_usuario = ?";
+            String query = "SELECT nombre, correo, telefono, direccion FROM usuarios WHERE id = ?";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setInt(1, idDocente);
 

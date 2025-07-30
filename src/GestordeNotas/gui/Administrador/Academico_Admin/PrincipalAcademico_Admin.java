@@ -13,7 +13,7 @@ public class PrincipalAcademico_Admin extends JFrame {
     private JPanel PrincipalAdmin;
     private JTabbedPane tabbedPane1;
     private JPanel AdminCrudAsig;
-    private JTable tablaAdminGestiondeAsignaturas;
+    private JTable s;
     private JButton INGRESARasignaturasButton;
     private JTextField textField1;
     private JButton MOSTRARasginaturasButton;
@@ -84,7 +84,7 @@ public class PrincipalAcademico_Admin extends JFrame {
         ACTUALIZARasignaturasButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedRow = tablaAdminGestiondeAsignaturas.getSelectedRow();
+                int selectedRow = s.getSelectedRow();
                 if (selectedRow == -1) {
                     JOptionPane.showMessageDialog(null, "Por favor, seleccione una asignatura de la tabla para actualizar.");
                     return;
@@ -100,7 +100,7 @@ public class PrincipalAcademico_Admin extends JFrame {
                 }
 
                 try {
-                    int id = (Integer) tablaAdminGestiondeAsignaturas.getValueAt(selectedRow, 0);
+                    int id = (Integer) s.getValueAt(selectedRow, 0);
                     int creditos = Integer.parseInt(creditosStr); // Convertir créditos a número
 
                     Connection conexion = CleverDB.getConexion();
@@ -128,14 +128,14 @@ public class PrincipalAcademico_Admin extends JFrame {
         ELIMINARasignaturaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedRow = tablaAdminGestiondeAsignaturas.getSelectedRow();
+                int selectedRow = s.getSelectedRow();
                 if (selectedRow == -1) {
                     JOptionPane.showMessageDialog(null, "Por favor, seleccione una asignatura de la tabla para eliminar.");
                     return;
                 }
 
                 try {
-                    int id = (Integer) tablaAdminGestiondeAsignaturas.getValueAt(selectedRow, 0);
+                    int id = (Integer) s.getValueAt(selectedRow, 0);
                     int confirm = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar esta asignatura?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         Connection conexion = CleverDB.getConexion();
@@ -369,7 +369,7 @@ public class PrincipalAcademico_Admin extends JFrame {
                 });
             }
 
-            tablaAdminGestiondeAsignaturas.setModel(model);
+            s.setModel(model);
             rs.close();
             stmt.close();
             conexion.close();
