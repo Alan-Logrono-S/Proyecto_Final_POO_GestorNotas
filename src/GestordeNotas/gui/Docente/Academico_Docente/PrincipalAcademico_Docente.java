@@ -91,7 +91,7 @@ public class PrincipalAcademico_Docente extends JFrame {
 
             DefaultTableModel model = new DefaultTableModel(new Object[]{"ID", "Nombre"}, 0);
             while (rs.next()) {
-                model.addRow(new Object[]{
+                model.addRow(new Object[] {
                         rs.getInt("id"),
                         rs.getString("nombre")
                 });
@@ -125,7 +125,7 @@ public class PrincipalAcademico_Docente extends JFrame {
 
             DefaultTableModel model = new DefaultTableModel(new Object[]{"ID", "Nombre", "Calificación"}, 0);
             while (rs.next()) {
-                model.addRow(new Object[]{
+                model.addRow(new Object[] {
                         rs.getInt("id"),
                         rs.getString("nombre"),
                         rs.getObject("calificacion") != null ? rs.getDouble("calificacion") : ""
@@ -145,6 +145,7 @@ public class PrincipalAcademico_Docente extends JFrame {
         int filaSeleccionada = tablaVerEstudxAsig.getSelectedRow();
         String asignatura = (String) comboBox1.getSelectedItem();
 
+        // Verifica si se ha seleccionado una fila
         if (filaSeleccionada == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione un estudiante para ingresar la calificación.");
             return;
@@ -154,6 +155,7 @@ public class PrincipalAcademico_Docente extends JFrame {
             return;
         }
 
+        // Obtener ID del estudiante de la tabla seleccionada (tablaVerEstudxAsig)
         int idEstudiante = (int) tablaVerEstudxAsig.getValueAt(filaSeleccionada, 0);
 
         String input = JOptionPane.showInputDialog(this, "Ingrese la calificación para el estudiante:");
@@ -194,12 +196,6 @@ public class PrincipalAcademico_Docente extends JFrame {
             psCheck.setInt(1, idMatricula);
             ResultSet rsCheck = psCheck.executeQuery();
 
-            if (rsCheck.next()) {
-                JOptionPane.showMessageDialog(this, "Ya existe una calificación para este estudiante. Use Modificar.");
-                rsCheck.close();
-                psCheck.close();
-                return;
-            }
             rsCheck.close();
             psCheck.close();
 
@@ -213,7 +209,7 @@ public class PrincipalAcademico_Docente extends JFrame {
 
             if (filas > 0) {
                 JOptionPane.showMessageDialog(this, "Calificación ingresada correctamente.");
-                cargarCalificaciones(); // actualizar tabla
+                cargarCalificaciones(); // Actualizar tabla
             } else {
                 JOptionPane.showMessageDialog(this, "Error al ingresar la calificación.");
             }

@@ -270,7 +270,7 @@ public class Principal_Academico_Coord extends JFrame {
                 String query = "SELECT c.id_calificacion, u.nombre AS estudiante, a.nombre AS asignatura, c.calificacion " +
                         "FROM calificaciones c " +
                         "JOIN matriculas m ON c.id_matricula = m.id_matricula " +
-                        "JOIN usuarios u ON m.id_estudiante = u.id" +
+                        "JOIN usuarios u ON m.id_estudiante = u.id " +
                         "JOIN asignaturas a ON m.id_asignatura = a.id_asignatura " +
                         "WHERE a.nombre = ?";
                 PreparedStatement stmt = conexion.prepareStatement(query);
