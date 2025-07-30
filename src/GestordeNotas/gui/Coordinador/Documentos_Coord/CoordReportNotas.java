@@ -45,9 +45,11 @@ public class CoordReportNotas extends JFrame {
         reportePorPeriodoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cargarReportes("periodo");
+                cargarReportes("descripcion");
             }
         });
+
+
 
         // Regresar al menú principal
         regresarButton.addActionListener(new ActionListener() {
@@ -108,4 +110,7 @@ public class CoordReportNotas extends JFrame {
             JOptionPane.showMessageDialog(this, "Error al cargar reportes: " + ex.getMessage());
         }
     }
+
+
+
 }

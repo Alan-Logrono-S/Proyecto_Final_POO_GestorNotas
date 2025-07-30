@@ -139,7 +139,7 @@ public class PrincipalAcademico_Estudiante extends JFrame {
                     "FROM calificaciones c " +
                     "JOIN matriculas m ON c.id_matricula = m.id_matricula " +
                     "JOIN asignaturas a ON m.id_asignatura = a.id_asignatura " +
-                    "WHERE m.id_estudiante = ?";
+                    "WHERE m.id_estudiante = ? AND a.nombre = ?";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setInt(1, idEstudiante);
             stmt.setString(2, asignatura);
@@ -168,6 +168,7 @@ public class PrincipalAcademico_Estudiante extends JFrame {
 
 
     private void enviarCalificacionesPorCorreo(){
+        String asignatura = (String) comboBox1.getSelectedItem();
         try (Connection con = CleverDB.getConexion()){
             String correo = "";
             PreparedStatement ps = con.prepareStatement("SELECT correo FROM usuarios WHERE id = ?");
@@ -184,9 +185,10 @@ public class PrincipalAcademico_Estudiante extends JFrame {
                     "FROM calificaciones c " +
                     "JOIN matriculas m ON c.id_matricula = m.id_matricula " +
                     "JOIN asignaturas a ON m.id_asignatura = a.id_asignatura " +
-                    "WHERE m.id_estudiante = ?";
+                    "WHERE m.id_estudiante = ? AND a.nombre = ?";
             PreparedStatement stmt= con.prepareStatement(query);
             stmt.setInt(1,idEstudiante);
+            stmt.setString(2, asignatura);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -236,8 +238,6 @@ public class PrincipalAcademico_Estudiante extends JFrame {
 
 
     }
-
-
 
 
 
