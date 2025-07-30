@@ -377,4 +377,8 @@ public class PrincipalAcademico_Admin extends JFrame {
             e.printStackTrace();
         }
     }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }
