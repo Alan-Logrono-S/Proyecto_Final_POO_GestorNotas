@@ -301,6 +301,17 @@ public class PrincipalDocumentacion_Admin extends JFrame {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error al actualizar las matrículas: " + e.getMessage());
         }
+
+        // En el método de actualización de la tabla de matrículas
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("ID Matrícula");
+        model.addColumn("ID Estudiante");
+        model.addColumn("ID Asignatura");
+        model.addColumn("ID Periodo");
+
+        tablaAdminMatriculas.setModel(model);
+
+
     }
 
     // Método para obtener el ID del estudiante desde el nombre

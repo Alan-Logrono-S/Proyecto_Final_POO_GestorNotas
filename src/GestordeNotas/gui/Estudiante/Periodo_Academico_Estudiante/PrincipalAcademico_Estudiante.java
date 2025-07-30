@@ -31,6 +31,10 @@ public class PrincipalAcademico_Estudiante extends JFrame {
     private JTable tablaAsignaturasEstudiantes;
     private JButton cargarAsignaturasButton;
     private JButton correoButton;
+    private JComboBox comboBox2;
+    private JButton agregarButton;
+    private JTable table1;
+    private JButton cancelarButton;
 
     private int idEstudiante;
 

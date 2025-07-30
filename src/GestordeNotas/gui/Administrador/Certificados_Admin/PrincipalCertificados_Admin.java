@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 public class PrincipalCertificados_Admin extends JFrame {
 
@@ -101,28 +105,47 @@ public class PrincipalCertificados_Admin extends JFrame {
             return;
         }
 
-        String rutaArchivo = (String) tablaAdminCertificados.getValueAt(selectedRow, 4);
+        String nombreEstudiante = (String) tablaAdminCertificados.getValueAt(selectedRow, 1);
+        String asignatura = (String) tablaAdminCertificados.getValueAt(selectedRow, 2);
+        String tipo = (String) tablaAdminCertificados.getValueAt(selectedRow, 3);
 
-        if (rutaArchivo == null || rutaArchivo.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "La ruta del certificado es inválida.");
-            return;
+        // Crear nombre del archivo
+        String nombreArchivo = nombreEstudiante + "" + asignatura + "" + tipo + ".pdf";
+
+        // Ruta de la carpeta 'certificados'
+        File carpeta = new File("certificados");
+        if (!carpeta.exists()) {
+            carpeta.mkdirs(); // Crear la carpeta si no existe
         }
 
-        File archivoOriginal = new File(rutaArchivo);
-        if (!archivoOriginal.exists()) {
-            JOptionPane.showMessageDialog(this, "El archivo no existe en la ruta especificada.");
-            return;
-        }
+        // Archivo destino
+        File archivoCertificado = new File(carpeta, nombreArchivo);
 
-        try {
-            String rutaDestino = System.getProperty("user.home") + "\\Desktop\\" + archivoOriginal.getName();
-            Files.copy(archivoOriginal.toPath(), new File(rutaDestino).toPath(), StandardCopyOption.REPLACE_EXISTING);
-            JOptionPane.showMessageDialog(this, "El certificado ha sido descargado en el escritorio.");
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error al copiar el archivo: " + ex.getMessage());
-            ex.printStackTrace();
+        // Si no existe, generar el PDF
+        if (!archivoCertificado.exists()) {
+            try {
+                Document document = new Document();
+                PdfWriter.getInstance(document, new java.io.FileOutputStream(archivoCertificado));
+                document.open();
+                document.add(new Paragraph("CERTIFICADO OFICIAL"));
+                document.add(new Paragraph(" "));
+                document.add(new Paragraph("Estudiante: " + nombreEstudiante));
+                document.add(new Paragraph("Asignatura: " + asignatura));
+                document.add(new Paragraph("Tipo: " + tipo));
+                document.add(new Paragraph("Fecha de generación: " + java.time.LocalDate.now()));
+                document.close();
+
+                JOptionPane.showMessageDialog(this, "Certificado generado en la carpeta 'certificados/'.");
+            } catch (DocumentException | IOException e) {
+                JOptionPane.showMessageDialog(this, "Error al generar el archivo PDF: " + e.getMessage());
+                e.printStackTrace();
+                return;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "El certificado ya existe en la carpeta 'certificados/'.");
         }
     }
+
 
     private void generarReportePorMateria() {
         try (Connection conexion = CleverDB.getConexion()) {
@@ -134,18 +157,29 @@ public class PrincipalCertificados_Admin extends JFrame {
             Statement stmt = conexion.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Asignatura");
+            model.addColumn("Estudiante");
+            model.addColumn("Tipo");
+            model.addColumn("Ruta del Archivo");
+
             while (rs.next()) {
-                System.out.println("Materia: " + rs.getString("asignatura") +
-                        " | Estudiante: " + rs.getString("estudiante") +
-                        " | Tipo: " + rs.getString("tipo"));
+                model.addRow(new Object[]{
+                        rs.getString("asignatura"),
+                        rs.getString("estudiante"),
+                        rs.getString("tipo"),
+                        rs.getString("ruta_archivo")
+                });
             }
 
+            tablaReportesAdmin.setModel(model);
             JOptionPane.showMessageDialog(this, "Reporte por materia generado con éxito.");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error al generar reporte: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
 
     private void generarReportePorEstudiante() {
         String nombreEstudiante = JOptionPane.showInputDialog(this, "Ingrese el nombre del estudiante:");
@@ -176,17 +210,27 @@ public class PrincipalCertificados_Admin extends JFrame {
             stmtCerts.setInt(1, idEstudiante);
             ResultSet rsCerts = stmtCerts.executeQuery();
 
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Asignatura");
+            model.addColumn("Tipo");
+            model.addColumn("Ruta del Archivo");
+
             while (rsCerts.next()) {
-                System.out.println("Asignatura: " + rsCerts.getString("asignatura") +
-                        " | Tipo: " + rsCerts.getString("tipo"));
+                model.addRow(new Object[]{
+                        rsCerts.getString("asignatura"),
+                        rsCerts.getString("tipo"),
+                        rsCerts.getString("ruta_archivo")
+                });
             }
 
+            tablaReportesAdmin.setModel(model);
             JOptionPane.showMessageDialog(this, "Reporte por estudiante generado con éxito.");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error al generar reporte: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
 
     private void generarReportePorPeriodo() {
         String fechaInicio = JOptionPane.showInputDialog(this, "Ingrese la fecha de inicio (YYYY-MM-DD):");
@@ -209,18 +253,29 @@ public class PrincipalCertificados_Admin extends JFrame {
             stmt.setString(2, fechaFin);
             ResultSet rs = stmt.executeQuery();
 
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Asignatura");
+            model.addColumn("Estudiante");
+            model.addColumn("Tipo");
+            model.addColumn("Ruta del Archivo");
+
             while (rs.next()) {
-                System.out.println("Asignatura: " + rs.getString("asignatura") +
-                        " | Estudiante: " + rs.getString("estudiante") +
-                        " | Tipo: " + rs.getString("tipo"));
+                model.addRow(new Object[]{
+                        rs.getString("asignatura"),
+                        rs.getString("estudiante"),
+                        rs.getString("tipo"),
+                        rs.getString("ruta_archivo")
+                });
             }
 
+            tablaReportesAdmin.setModel(model);
             JOptionPane.showMessageDialog(this, "Reporte por periodo generado con éxito.");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error al generar reporte: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new PrincipalCertificados_Admin().setVisible(true));
