@@ -53,4 +53,8 @@ public class PrincipalAdmin extends JFrame {
             }
         });
     }
+
+    public static void main(String[] args) {
+        new PrincipalAdmin().setVisible(true);
+    }
 }

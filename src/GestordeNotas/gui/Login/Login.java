@@ -47,20 +47,24 @@ public class Login extends JFrame {
                         JOptionPane.showMessageDialog(null, " Bienvenido " + rs.getString("nombre") + " como " + rol);
 
                         switch (rol) {
-                            case "Administrador":
+                            case "Admin":
                                 // Se crea la instancia de PrincipalAdmin y se muestra su formulario
+                                dispose();
                                 new PrincipalAdmin().setVisible(true);
                                 break;
                             case "Coordinador":
                                 // Se crea la instancia de PrincipalCoordinador y se muestra su formulario
+                                dispose();
                                 new PrincipalCoordinador().setVisible(true);
                                 break;
                             case "Docente":
                                 // Se crea la instancia de PrincipalDocente y se muestra su formulario
+                                dispose();
                                 new PrincipalDocente().setVisible(true);
                                 break;
                             case "Estudiante":
                                 // Se crea la instancia de PrincipalEstudiante y se muestra su formulario
+                                dispose();
                                 new PrincipalEstudiante().setVisible(true);
                                 break;
                         }

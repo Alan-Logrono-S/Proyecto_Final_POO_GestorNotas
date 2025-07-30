@@ -140,7 +140,7 @@ public class PrincipalCertificados_Admin extends JFrame {
             Statement stmt = conexion.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT c.id_certificado, u.nombre AS estudiante, a.nombre AS asignatura, c.tipo, c.ruta_archivo " +
                     "FROM certificados c " +
-                    "JOIN usuarios u ON c.id_estudiante = u.id_usuario " +
+                    "JOIN usuarios u ON c.id_estudiante = u.id " +
                     "JOIN asignaturas a ON c.id_asignatura = a.id_asignatura");
 
             DefaultTableModel model = new DefaultTableModel();
@@ -179,7 +179,7 @@ public class PrincipalCertificados_Admin extends JFrame {
             // Consulta SQL para obtener los certificados por materia
             String sql = "SELECT a.nombre AS asignatura, u.nombre AS estudiante, c.tipo, c.ruta_archivo " +
                     "FROM certificados c " +
-                    "JOIN usuarios u ON c.id_estudiante = u.id_usuario " +
+                    "JOIN usuarios u ON c.id_estudiante = u.id " +
                     "JOIN asignaturas a ON c.id_asignatura = a.id_asignatura";
 
             Statement stmt = conexion.createStatement();
@@ -220,13 +220,13 @@ public class PrincipalCertificados_Admin extends JFrame {
             Connection conexion = CleverDB.getConexion();
 
             // Obtener el ID del estudiante por nombre
-            String idEstudianteSql = "SELECT id_usuario FROM usuarios WHERE nombre = ?";
+            String idEstudianteSql = "SELECT id FROM usuarios WHERE nombre = ?";
             PreparedStatement stmt = conexion.prepareStatement(idEstudianteSql);
             stmt.setString(1, estudianteNombre);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                int idEstudiante = rs.getInt("id_usuario");
+                int idEstudiante = rs.getInt("id");
 
                 // Consulta SQL para obtener los certificados por ese estudiante
                 String sql = "SELECT a.nombre AS asignatura, c.tipo, c.ruta_archivo " +
@@ -276,7 +276,7 @@ public class PrincipalCertificados_Admin extends JFrame {
             // Consulta SQL para obtener los certificados en ese rango
             String sql = "SELECT a.nombre AS asignatura, u.nombre AS estudiante, c.tipo, c.ruta_archivo " +
                     "FROM certificados c " +
-                    "JOIN usuarios u ON c.id_estudiante = u.id_usuario " +
+                    "JOIN usuarios u ON c.id_estudiante = u.id " +
                     "JOIN asignaturas a ON c.id_asignatura = a.id_asignatura " +
                     "WHERE c.fecha_emision BETWEEN ? AND ?";
             PreparedStatement stmt = conexion.prepareStatement(sql);

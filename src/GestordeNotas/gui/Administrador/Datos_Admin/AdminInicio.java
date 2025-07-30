@@ -66,14 +66,14 @@ public class AdminInicio extends JFrame {
             Statement stmt = conexion.createStatement();
 
             // Consulta SQL para obtener solo los datos del administrador
-            String query = "SELECT id_usuario, nombre, correo, telefono, direccion FROM usuarios WHERE rol = 'admin'";
+            String query = "SELECT id, nombre, correo, telefono, direccion FROM usuarios WHERE rol = 'admin'";
 
             ResultSet rs = stmt.executeQuery(query);
 
             // Cargar los datos desde el resultado de la consulta SQL en el modelo de la tabla
             if (rs.next()) {
                 model.addRow(new Object[]{
-                        rs.getInt("id_usuario"),
+                        rs.getInt("id"),
                         rs.getString("nombre"),
                         rs.getString("correo"),
                         rs.getString("telefono"),

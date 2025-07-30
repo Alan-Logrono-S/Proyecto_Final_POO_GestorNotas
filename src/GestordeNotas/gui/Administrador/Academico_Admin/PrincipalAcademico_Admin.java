@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 
 public class PrincipalAcademico_Admin extends JFrame {
     private JPanel panel1;
+    private JPanel PrincipalAdmin;
     private JTabbedPane tabbedPane1;
     private JPanel AdminCrudAsig;
     private JTable tablaAdminGestiondeAsignaturas;
@@ -235,7 +236,7 @@ public class PrincipalAcademico_Admin extends JFrame {
                 try {
                     int id = (Integer) tablaAdminGestionUsers.getValueAt(selectedRow, 0);
                     Connection conexion = CleverDB.getConexion();
-                    String query = "UPDATE usuarios SET nombre = ?, correo = ?, rol = ? WHERE id_usuario = ?";
+                    String query = "UPDATE usuarios SET nombre = ?, correo = ?, rol = ? WHERE id= ?";
                     PreparedStatement stmt = conexion.prepareStatement(query);
                     stmt.setString(1, nombre);
                     stmt.setString(2, correo);
@@ -300,7 +301,7 @@ public class PrincipalAcademico_Admin extends JFrame {
                     int confirm = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este usuario?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         Connection conexion = CleverDB.getConexion();
-                        String query = "DELETE FROM usuarios WHERE id_usuario = ?";
+                        String query = "DELETE FROM usuarios WHERE id = ?";
                         PreparedStatement stmt = conexion.prepareStatement(query);
                         stmt.setInt(1, id);
                         stmt.executeUpdate();
@@ -322,7 +323,7 @@ public class PrincipalAcademico_Admin extends JFrame {
         try {
             Connection conexion = CleverDB.getConexion();
             Statement stmt = conexion.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT id_usuario, nombre, correo, rol FROM usuarios");
+            ResultSet rs = stmt.executeQuery("SELECT id, nombre, correo, rol FROM usuarios");
 
             DefaultTableModel model = new DefaultTableModel();
             model.addColumn("ID");
@@ -332,7 +333,7 @@ public class PrincipalAcademico_Admin extends JFrame {
 
             while (rs.next()) {
                 model.addRow(new Object[]{
-                        rs.getInt("id_usuario"),
+                        rs.getInt("id"),
                         rs.getString("nombre"),
                         rs.getString("correo"),
                         rs.getString("rol")
