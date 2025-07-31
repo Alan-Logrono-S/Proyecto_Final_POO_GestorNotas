@@ -31,12 +31,91 @@ public class PrincipalAcademico_Estudiante extends JFrame {
     private JTable tablaAsignaturasEstudiantes;
     private JButton cargarAsignaturasButton;
     private JButton correoButton;
-    private JComboBox comboBox2;
-    private JButton agregarButton;
-    private JTable table1;
+    private JComboBox comboBoxAsignaturaMatricula;
+    private JButton agregarMatriculaButton;
+    private JTable tableMatricula;
     private JButton cancelarButton;
+    private JPanel matriculasPanel;
 
     private int idEstudiante;
+
+    private void cargarTablaMatriculas() {
+        try (Connection con = CleverDB.getConexion()) {
+            String query = "SELECT a.nombre FROM asignaturas a " +
+                    "JOIN matriculas m ON a.id_asignatura = m.id_asignatura " +
+                    "WHERE m.id_estudiante = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, idEstudiante);
+            ResultSet rs = stmt.executeQuery();
+
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Asignaturas Matriculadas");
+
+            while (rs.next()) {
+                model.addRow(new Object[]{rs.getString("nombre")});
+            }
+
+            tableMatricula.setModel(model);
+
+            rs.close();
+            stmt.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar tabla de matrícula: " + ex.getMessage());
+        }
+    }
+
+    private void agregarMatriculaEstudiante() {
+        String nombreAsignatura = (String) comboBoxAsignaturaMatricula.getSelectedItem();
+        if (nombreAsignatura == null || nombreAsignatura.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Selecciona una asignatura.");
+            return;
+        }
+
+        try (Connection con = CleverDB.getConexion()) {
+            // Buscar el ID de la asignatura por su nombre
+            String idQuery = "SELECT id_asignatura FROM asignaturas WHERE nombre = ?";
+            PreparedStatement idStmt = con.prepareStatement(idQuery);
+            idStmt.setString(1, nombreAsignatura);
+            ResultSet rsId = idStmt.executeQuery();
+
+            if (!rsId.next()) {
+                JOptionPane.showMessageDialog(this, "No se encontró la asignatura en la base de datos.");
+                return;
+            }
+
+            int idAsignatura = rsId.getInt("id_asignatura");
+
+            // Verificar si ya está matriculado
+            String checkQuery = "SELECT COUNT(*) FROM matriculas WHERE id_estudiante = ? AND id_asignatura = ?";
+            PreparedStatement checkStmt = con.prepareStatement(checkQuery);
+            checkStmt.setInt(1, idEstudiante);
+            checkStmt.setInt(2, idAsignatura);
+            ResultSet rsCheck = checkStmt.executeQuery();
+
+            if (rsCheck.next() && rsCheck.getInt(1) > 0) {
+                JOptionPane.showMessageDialog(this, "Ya estás matriculado en esta asignatura.");
+                return;
+            }
+
+            int idPeriodo = 1; // o el valor real del período académico actual
+
+            String insertQuery = "INSERT INTO matriculas (id_estudiante, id_asignatura, id_periodo) VALUES (?, ?, ?)";
+            PreparedStatement insertStmt = con.prepareStatement(insertQuery);
+            insertStmt.setInt(1, idEstudiante);
+            insertStmt.setInt(2, idAsignatura);
+            insertStmt.setInt(3, idPeriodo);
+            insertStmt.executeUpdate();
+
+            JOptionPane.showMessageDialog(this, "¡Matrícula exitosa en " + nombreAsignatura + "!");
+            cargarAsignaturasInscritas(); // actualizar lista
+            cargarTablaMatriculas();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al registrar matrícula: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
 
     public PrincipalAcademico_Estudiante(int idEstudiante) {
         this.idEstudiante = idEstudiante;
@@ -46,6 +125,8 @@ public class PrincipalAcademico_Estudiante extends JFrame {
         setSize(700, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        cargarTablaMatriculas();
 
         // Cargar datos personales
         CARGARButton.addActionListener(e -> cargarDatosPersonales());
@@ -70,6 +151,7 @@ public class PrincipalAcademico_Estudiante extends JFrame {
 
             }
         });
+        agregarMatriculaButton.addActionListener(e -> agregarMatriculaEstudiante());
     }
 
     private void cargarDatosPersonales() {
@@ -242,7 +324,5 @@ public class PrincipalAcademico_Estudiante extends JFrame {
 
 
     }
-
-
 
 }
