@@ -9,40 +9,41 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PrincipalAcademico_Admin extends JFrame {
+    // Panel principal y componentes visuales
     private JPanel panel1;
     private JPanel PrincipalAdmin;
     private JTabbedPane tabbedPane1;
-    private JPanel AdminCrudAsig;
-    private JTable s;
-    private JButton INGRESARasignaturasButton;
-    private JTextField textField1;
-    private JButton MOSTRARasginaturasButton;
-    private JButton ELIMINARasignaturaButton;
-    private JButton LIMPIARButton;
-    private JTextField textField2;
-    private JButton ACTUALIZARasignaturasButton2;
-    private JPanel AdminCrudUsuarios;
-    private JTable tablaAdminGestionUsers;
-    private JButton AGREGARButton;
-    private JTextField textField3; // Nombre
-    private JTextField textField4; // Correo
-    private JTextField textField5; // Rol
-    private JButton ACTUALIZARButton;
-    private JButton regresarButton;
-    private JButton salirDelSistemaButton;
-    private JButton MOSTRARButton1;
-    private JButton ELIMINARButton1;
-    private JButton LIMPIARButton1;
-    private JTextField textField6; // ID (si es necesario)
-    private JTextField textFieldContraseña; // Nuevo campo para la contraseña
-    private JTextField textField7;  // Descripción de asignatura
-    private JTextField textFieldCreditos;  // Créditos de la asignatura
+    private JPanel AdminCrudAsig; // Panel para CRUD de asignaturas
+    private JTable s; // Tabla para mostrar asignaturas
+    private JButton INGRESARasignaturasButton; // Botón para ingresar nueva asignatura
+    private JTextField textField1; // Campo para nombre de asignatura
+    private JButton MOSTRARasginaturasButton; // Botón para mostrar asignaturas
+    private JButton ELIMINARasignaturaButton; // Botón para eliminar asignatura
+    private JButton LIMPIARButton; // Botón para limpiar campos asignaturas
+    private JTextField textField2; // Campo para descripción de asignatura
+    private JButton ACTUALIZARasignaturasButton2; // Botón para actualizar asignatura
+    private JPanel AdminCrudUsuarios; // Panel para CRUD de usuarios
+    private JTable tablaAdminGestionUsers; // Tabla para mostrar usuarios
+    private JButton AGREGARButton; // Botón para agregar usuario
+    private JTextField textField3; // Campo nombre usuario
+    private JTextField textField4; // Campo correo usuario
+    private JTextField textField5; // Campo rol usuario
+    private JButton ACTUALIZARButton; // Botón para actualizar usuario
+    private JButton regresarButton; // Botón para regresar al panel principal
+    private JButton salirDelSistemaButton; // Botón para salir del sistema
+    private JButton MOSTRARButton1; // Botón para mostrar usuarios
+    private JButton ELIMINARButton1; // Botón para eliminar usuario
+    private JButton LIMPIARButton1; // Botón para limpiar campos usuarios
+    private JTextField textField6; // Campo ID usuario (si es necesario)
+    private JTextField textFieldContraseña; // Campo para contraseña usuario
+    private JTextField textField7;  // Campo para descripción asignatura (extra)
+    private JTextField textFieldCreditos;  // Campo para créditos de la asignatura
 
     public PrincipalAcademico_Admin() {
         setContentPane(panel1);
         setTitle("Academico - Administrador");
         setSize(600, 400);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); // Centrar ventana
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Acción para ingresar una asignatura
@@ -53,24 +54,25 @@ public class PrincipalAcademico_Admin extends JFrame {
                 String descripcion = textField2.getText();
                 String creditosStr = textFieldCreditos.getText();
 
+                // Validar campos no vacíos
                 if (nombre.isEmpty() || descripcion.isEmpty() || creditosStr.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
                     return;
                 }
 
                 try {
-                    int creditos = Integer.parseInt(creditosStr); // Convertir créditos a número
+                    int creditos = Integer.parseInt(creditosStr); // Convertir créditos a entero
                     Connection conexion = CleverDB.getConexion();
                     String query = "INSERT INTO asignaturas (nombre, descripcion, creditos) VALUES (?, ?, ?)";
                     PreparedStatement stmt = conexion.prepareStatement(query);
                     stmt.setString(1, nombre);
                     stmt.setString(2, descripcion);
                     stmt.setInt(3, creditos);
-                    stmt.executeUpdate();
+                    stmt.executeUpdate(); // Ejecutar inserción en DB
                     stmt.close();
                     conexion.close();
                     JOptionPane.showMessageDialog(null, "Asignatura agregada correctamente.");
-                    cargarAsignaturas(); // Recargar asignaturas después de agregar una nueva
+                    cargarAsignaturas(); // Actualizar tabla asignaturas
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Error al agregar asignatura: " + ex.getMessage());
                     ex.printStackTrace();
@@ -80,12 +82,12 @@ public class PrincipalAcademico_Admin extends JFrame {
             }
         });
 
-        // Acción para actualizar una asignatura
+        // Acción para actualizar una asignatura existente
         ACTUALIZARasignaturasButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = s.getSelectedRow();
-                if (selectedRow == -1) {
+                if (selectedRow == -1) { // Validar que se haya seleccionado una fila
                     JOptionPane.showMessageDialog(null, "Por favor, seleccione una asignatura de la tabla para actualizar.");
                     return;
                 }
@@ -94,14 +96,15 @@ public class PrincipalAcademico_Admin extends JFrame {
                 String descripcion = textField2.getText();
                 String creditosStr = textFieldCreditos.getText();
 
+                // Validar campos no vacíos
                 if (nombre.isEmpty() || descripcion.isEmpty() || creditosStr.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
                     return;
                 }
 
                 try {
-                    int id = (Integer) s.getValueAt(selectedRow, 0);
-                    int creditos = Integer.parseInt(creditosStr); // Convertir créditos a número
+                    int id = (Integer) s.getValueAt(selectedRow, 0); // Obtener ID asignatura de la tabla
+                    int creditos = Integer.parseInt(creditosStr);
 
                     Connection conexion = CleverDB.getConexion();
                     String query = "UPDATE asignaturas SET nombre = ?, descripcion = ?, creditos = ? WHERE id_asignatura = ?";
@@ -110,11 +113,11 @@ public class PrincipalAcademico_Admin extends JFrame {
                     stmt.setString(2, descripcion);
                     stmt.setInt(3, creditos);
                     stmt.setInt(4, id);
-                    stmt.executeUpdate();
+                    stmt.executeUpdate(); // Ejecutar actualización en DB
                     stmt.close();
                     conexion.close();
                     JOptionPane.showMessageDialog(null, "Asignatura actualizada correctamente.");
-                    cargarAsignaturas(); // Recargar asignaturas después de actualizar
+                    cargarAsignaturas(); // Recargar tabla
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Error al actualizar asignatura: " + ex.getMessage());
                     ex.printStackTrace();
@@ -124,29 +127,30 @@ public class PrincipalAcademico_Admin extends JFrame {
             }
         });
 
-        // Acción para eliminar una asignatura
+        // Acción para eliminar una asignatura seleccionada
         ELIMINARasignaturaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = s.getSelectedRow();
-                if (selectedRow == -1) {
+                if (selectedRow == -1) { // Validar selección
                     JOptionPane.showMessageDialog(null, "Por favor, seleccione una asignatura de la tabla para eliminar.");
                     return;
                 }
 
                 try {
-                    int id = (Integer) s.getValueAt(selectedRow, 0);
+                    int id = (Integer) s.getValueAt(selectedRow, 0); // Obtener ID asignatura
+                    // Confirmar eliminación con el usuario
                     int confirm = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar esta asignatura?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         Connection conexion = CleverDB.getConexion();
                         String query = "DELETE FROM asignaturas WHERE id_asignatura = ?";
                         PreparedStatement stmt = conexion.prepareStatement(query);
                         stmt.setInt(1, id);
-                        stmt.executeUpdate();
+                        stmt.executeUpdate(); // Ejecutar eliminación en DB
                         stmt.close();
                         conexion.close();
                         JOptionPane.showMessageDialog(null, "Asignatura eliminada correctamente.");
-                        cargarAsignaturas(); // Recargar asignaturas después de eliminar
+                        cargarAsignaturas(); // Actualizar tabla
                     }
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Error al eliminar asignatura: " + ex.getMessage());
@@ -155,71 +159,71 @@ public class PrincipalAcademico_Admin extends JFrame {
             }
         });
 
-        // Limpiar los campos de texto
+        // Botón para limpiar los campos de texto relacionados con asignaturas
         LIMPIARButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                textField1.setText(""); // Nombre
-                textField2.setText(""); // Descripción
-                textField7.setText("");
-                textFieldCreditos.setText(""); // Créditos
+                textField1.setText(""); // Limpiar nombre
+                textField2.setText(""); // Limpiar descripción
+                textField7.setText(""); // Limpiar descripción extra
+                textFieldCreditos.setText(""); // Limpiar créditos
             }
         });
 
-        // Limpiar los campos de texto en usuarios
+        // Botón para limpiar los campos de texto relacionados con usuarios
         LIMPIARButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                textField3.setText(""); // Nombre
-                textField4.setText(""); // Correo
-                textField5.setText(""); // Rol
-                textField6.setText("");
-                textFieldContraseña.setText(""); // Contraseña
+                textField3.setText(""); // Limpiar nombre usuario
+                textField4.setText(""); // Limpiar correo
+                textField5.setText(""); // Limpiar rol
+                textField6.setText(""); // Limpiar ID
+                textFieldContraseña.setText(""); // Limpiar contraseña
             }
         });
 
-        // Volver al panel principal
+        // Botón para regresar al panel principal del administrador
         regresarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                new PrincipalAdmin().setVisible(true);
+                dispose(); // Cerrar ventana actual
+                new PrincipalAdmin().setVisible(true); // Abrir ventana principal administrador
             }
         });
 
-        // Salir del sistema
+        // Botón para salir completamente del sistema con confirmación
         salirDelSistemaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int confirm = JOptionPane.showConfirmDialog(null, "¿Estás seguro que quieres salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
-                    System.exit(0);
+                    System.exit(0); // Salir de la aplicación
                 }
             }
         });
 
-        // Acción para mostrar asignaturas
+        // Botón para mostrar las asignaturas en la tabla
         MOSTRARasginaturasButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cargarAsignaturas(); // Cargar asignaturas al presionar MOSTRAR
+                cargarAsignaturas(); // Cargar y mostrar asignaturas
             }
         });
 
-        // Acción de mostrar usuarios
+        // Botón para mostrar los usuarios en la tabla
         MOSTRARButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cargarUsuarios(); // Cargar usuarios al presionar MOSTRAR
+                cargarUsuarios(); // Cargar y mostrar usuarios
             }
         });
 
-        // Acción para actualizar usuarios
+        // Acción para actualizar datos de un usuario seleccionado
         ACTUALIZARButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = tablaAdminGestionUsers.getSelectedRow();
-                if (selectedRow == -1) {
+                if (selectedRow == -1) { // Validar selección
                     JOptionPane.showMessageDialog(null, "Por favor, seleccione un usuario de la tabla para actualizar.");
                     return;
                 }
@@ -228,13 +232,14 @@ public class PrincipalAcademico_Admin extends JFrame {
                 String correo = textField4.getText();
                 String rol = textField5.getText();
 
+                // Validar campos no vacíos
                 if (nombre.isEmpty() || correo.isEmpty() || rol.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
                     return;
                 }
 
                 try {
-                    int id = (Integer) tablaAdminGestionUsers.getValueAt(selectedRow, 0);
+                    int id = (Integer) tablaAdminGestionUsers.getValueAt(selectedRow, 0); // Obtener ID usuario
                     Connection conexion = CleverDB.getConexion();
                     String query = "UPDATE usuarios SET nombre = ?, correo = ?, rol = ? WHERE id= ?";
                     PreparedStatement stmt = conexion.prepareStatement(query);
@@ -242,11 +247,11 @@ public class PrincipalAcademico_Admin extends JFrame {
                     stmt.setString(2, correo);
                     stmt.setString(3, rol);
                     stmt.setInt(4, id);
-                    stmt.executeUpdate();
+                    stmt.executeUpdate(); // Ejecutar actualización en DB
                     stmt.close();
                     conexion.close();
                     JOptionPane.showMessageDialog(null, "Usuario actualizado correctamente.");
-                    cargarUsuarios(); // Recargar usuarios después de actualizar
+                    cargarUsuarios(); // Recargar tabla usuarios
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Error al actualizar usuario: " + ex.getMessage());
                     ex.printStackTrace();
@@ -254,61 +259,65 @@ public class PrincipalAcademico_Admin extends JFrame {
             }
         });
 
+        // Acción para agregar un nuevo usuario a la base de datos
         AGREGARButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String nombre = textField3.getText();
                 String correo = textField4.getText();
                 String rol = textField5.getText();
-                String contraseña = textFieldContraseña.getText(); // Obtener la contraseña
+                String contraseña = textFieldContraseña.getText(); // Obtener contraseña
 
+                // Validar campos no vacíos
                 if (nombre.isEmpty() || correo.isEmpty() || rol.isEmpty() || contraseña.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
                     return;
                 }
 
                 try {
-                    // Conectar a la base de datos
                     Connection conexion = CleverDB.getConexion();
                     String query = "INSERT INTO usuarios (nombre, correo, rol, contraseña) VALUES (?, ?, ?, ?)";
                     PreparedStatement stmt = conexion.prepareStatement(query);
                     stmt.setString(1, nombre);
                     stmt.setString(2, correo);
                     stmt.setString(3, rol);
-                    stmt.setString(4, contraseña);  // Insertar la contraseña proporcionada
-                    stmt.executeUpdate();
+                    stmt.setString(4, contraseña);  // Insertar contraseña
+                    stmt.executeUpdate(); // Ejecutar inserción
                     stmt.close();
                     conexion.close();
                     JOptionPane.showMessageDialog(null, "Usuario agregado correctamente.");
-                    cargarUsuarios(); // Recargar usuarios después de agregar uno
+                    cargarUsuarios(); // Recargar tabla usuarios
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Error al agregar usuario: " + ex.getMessage());
                     ex.printStackTrace();
                 }
             }
         });
+
+        // Acción para eliminar un usuario seleccionado
         ELIMINARButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = tablaAdminGestionUsers.getSelectedRow();
-                if (selectedRow == -1) {
+                if (selectedRow == -1) { // Validar selección
                     JOptionPane.showMessageDialog(null, "Por favor, seleccione un usuario de la tabla para eliminar.");
                     return;
                 }
 
                 try {
-                    int id = (Integer) tablaAdminGestionUsers.getValueAt(selectedRow, 0);
+                    int id = (Integer) tablaAdminGestionUsers.getValueAt(selectedRow, 0); // Obtener ID usuario
+                    // Confirmar eliminación
                     int confirm = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este usuario?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         Connection conexion = CleverDB.getConexion();
                         String query = "DELETE FROM usuarios WHERE id = ?";
                         PreparedStatement stmt = conexion.prepareStatement(query);
                         stmt.setInt(1, id);
-                        stmt.executeUpdate();
+                        stmt.executeUpdate(); // Ejecutar eliminación
                         stmt.close();
                         conexion.close();
                         JOptionPane.showMessageDialog(null, "Usuario eliminado correctamente.");
-                        cargarUsuarios(); // Recargar usuarios después de eliminar
+                        cargarUsuarios(); // Recargar tabla usuarios
                     }
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Error al eliminar usuario: " + ex.getMessage());
@@ -319,6 +328,7 @@ public class PrincipalAcademico_Admin extends JFrame {
 
     }
 
+    // Metodo para cargar los usuarios desde la base de datos y mostrar en la tabla
     private void cargarUsuarios() {
         try {
             Connection conexion = CleverDB.getConexion();
@@ -331,6 +341,7 @@ public class PrincipalAcademico_Admin extends JFrame {
             model.addColumn("Correo");
             model.addColumn("Rol");
 
+            // Recorrer resultados y agregar filas a la tabla
             while (rs.next()) {
                 model.addRow(new Object[]{
                         rs.getInt("id"),
@@ -340,7 +351,7 @@ public class PrincipalAcademico_Admin extends JFrame {
                 });
             }
 
-            tablaAdminGestionUsers.setModel(model);
+            tablaAdminGestionUsers.setModel(model); // Asignar modelo a la tabla usuarios
             rs.close();
             stmt.close();
             conexion.close();
@@ -350,6 +361,7 @@ public class PrincipalAcademico_Admin extends JFrame {
         }
     }
 
+    // Metodo para cargar las asignaturas desde la base de datos y mostrar en la tabla
     private void cargarAsignaturas() {
         try {
             Connection conexion = CleverDB.getConexion();
@@ -361,6 +373,7 @@ public class PrincipalAcademico_Admin extends JFrame {
             model.addColumn("Nombre");
             model.addColumn("Descripción");
 
+            // Recorrer resultados y agregar filas a la tabla
             while (rs.next()) {
                 model.addRow(new Object[]{
                         rs.getInt("id_asignatura"),
@@ -369,7 +382,7 @@ public class PrincipalAcademico_Admin extends JFrame {
                 });
             }
 
-            s.setModel(model);
+            s.setModel(model); // Asignar modelo a la tabla asignaturas
             rs.close();
             stmt.close();
             conexion.close();
