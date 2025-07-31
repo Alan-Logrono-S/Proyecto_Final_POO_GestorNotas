@@ -14,7 +14,6 @@ public class CoordReportNotas extends JFrame {
     private JTable tablaCoordRepotes;
     private JButton reportePorEstudianteButton;
     private JButton reportePorMateriaButton;
-    private JButton reportePorPeriodoButton;
     private JButton regresarButton;
     private JButton salirButton;
 
@@ -38,14 +37,6 @@ public class CoordReportNotas extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cargarReportes("materia");
-            }
-        });
-
-        // Acción para mostrar reportes por periodo
-        reportePorPeriodoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cargarReportes("descripcion");
             }
         });
 
@@ -111,6 +102,9 @@ public class CoordReportNotas extends JFrame {
         }
     }
 
-
+    
+    public static void main(String[] args) {
+        new CoordReportNotas().setVisible(true);
+    }
 
 }

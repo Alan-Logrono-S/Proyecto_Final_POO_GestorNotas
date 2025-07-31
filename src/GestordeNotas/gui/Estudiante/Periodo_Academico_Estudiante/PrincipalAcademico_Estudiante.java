@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+
 public class PrincipalAcademico_Estudiante extends JFrame {
     private JTabbedPane tabbedPane1;
     private JPanel panel1;
@@ -36,6 +37,7 @@ public class PrincipalAcademico_Estudiante extends JFrame {
     private JTable tableMatricula;
     private JButton cancelarButton;
     private JPanel matriculasPanel;
+// Estudiante
 
     private int idEstudiante;
 
@@ -140,7 +142,7 @@ public class PrincipalAcademico_Estudiante extends JFrame {
         // Volver al menú principal
         regresarButton.addActionListener(e -> {
             dispose();
-            new PrincipalEstudiante().setVisible(true);
+            new PrincipalEstudiante(idEstudiante).setVisible(true);
         });
 
         salirButton.addActionListener(e -> dispose());

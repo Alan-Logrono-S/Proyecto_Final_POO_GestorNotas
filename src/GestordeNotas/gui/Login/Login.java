@@ -63,9 +63,9 @@ public class Login extends JFrame {
                                 new PrincipalDocente().setVisible(true);
                                 break;
                             case "Estudiante":
-                                // Se crea la instancia de PrincipalEstudiante y se muestra su formulario
+                                int idEstudiante = rs.getInt("id");
                                 dispose();
-                                new PrincipalEstudiante().setVisible(true);
+                                new PrincipalEstudiante(idEstudiante).setVisible(true);
                                 break;
                         }
                     } else {

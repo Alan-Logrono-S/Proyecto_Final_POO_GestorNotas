@@ -43,7 +43,7 @@ public class PrincipalDocumentacion_Estudiante extends JFrame {
 
         regresarButton.addActionListener(e -> {
             dispose();
-            new PrincipalEstudiante().setVisible(true);
+            new PrincipalEstudiante(idEstudiante).setVisible(true);
         });
 
         salirButton.addActionListener(e -> dispose());
